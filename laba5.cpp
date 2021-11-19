@@ -1,15 +1,17 @@
 #include <iostream>
-#include <fstream>
 
 char** connect( char** matrix1,int m1,int n1, char** matrix2,int m2,int n2)
 {
+    //если количество столбцов отличается, операцию выполнить невозможно
     if(n1 != n2)
         return nullptr;
 
-    char** result = new char*[m1+m2];
+    char** result = new char*[m1+m2];//создан двумерный массив в котором m1+m2 строк
     for(int i = 0; i < m1+m2;i++)
         result[i] = new char[n1];
 
+
+    //копируем первую матрицу в результирующую матрицу
     for(int i = 0;i<m1; i ++)
     {
         for(int j = 0;j<n1;j++)
@@ -17,7 +19,7 @@ char** connect( char** matrix1,int m1,int n1, char** matrix2,int m2,int n2)
             result[i][j] = matrix1[i][j];
         }
     }
-
+    //под первую матрицу копируем элементы из второй матрицы
     for(int i = 0;i<m2;i++)
     {
         for(int j = 0;j<n2;j++)
@@ -30,8 +32,6 @@ char** connect( char** matrix1,int m1,int n1, char** matrix2,int m2,int n2)
 
 int main(void)
 {
-    std::ifstream fin("123");
-    std::ofstream fout("123");
     char** matrix1;
     int m1,n1;
     char** matrix2;
