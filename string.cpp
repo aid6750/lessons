@@ -58,14 +58,14 @@ public:
     {
         //если в нашей строке недостаточно места,
         //мы выделяем новый кусок памяти достаточного размера
-        if(s.copacity_ <= this->size())
+        if(this->copacity_ <= s.size())
         {
             delete [] array;
             this->copacity_ = s.size()+1;
             array = new char[s.size()+1];
         }
         this->length = s.size();
-        for(uint64_t i = 0;i<=s.size()+1;i++)
+        for(uint64_t i = 0;i<=s.size();i++)
         {
             array[i] = s[i];
         }
@@ -100,8 +100,8 @@ public:
     //оператор + выразили через +=, чтоб избежать лишних копирований строки
     const string operator+(const string& s) const
     {
-        string s1 = s;
-        return s1+=s;
+        string s1 = *this;
+        return s1+= s;
     }
     bool operator ==(const string& s) const
     {
