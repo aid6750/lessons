@@ -1,0 +1,27 @@
+#include <iostream>
+#include <algorithm>
+
+template <typename T>
+class vector
+{
+public:
+    vector(int N)
+    {
+        size_ = N;
+        capacity_ = N;
+        array = new T[N];
+    }
+    ~vector()
+    {
+        delete [] array;
+    }
+private:
+    T* array;
+    uint64_t capacity_;
+    uint64_t size_;
+};
+
+int main()
+{
+    return 0;
+}
