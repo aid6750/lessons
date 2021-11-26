@@ -42,7 +42,13 @@ public:
         //тело конструктора ничего не содержит, потому что этот конструктор
         //вызывает конструктор от указателя на char
     }
-
+    string(string&& s)
+    {
+        array = s.array;
+        s.array = nullptr;
+        length = s.length;
+        copacity_ = s.copacity_;
+    }
     ~string()
     {
         if(array != nullptr)
@@ -110,7 +116,16 @@ public:
         }
         return *this;
     }
-
+    string& operator=(string&& s)
+    {
+        if(array != nullptr)
+            delete [] array;
+        array = s.array;
+        s.array = nullptr;
+        length = s.length;
+        copacity_ = s.copacity_;
+        return *this;
+    }
     string& operator +=(const string& s)
     {
         //если недостаточно памяти, мы расширяем строку
@@ -137,7 +152,7 @@ public:
         return *this;
     }
     //оператор + выразили через +=, чтоб избежать лишних копирований строки
-    const string operator+(const string& s) const
+    string operator+(const string& s) const
     {
         string s1 = *this;
         return s1+= s;
