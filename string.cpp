@@ -1,8 +1,6 @@
 #include <iostream>
-#include <fstream>
-#include <ctime>
-#include <vector>
 #include <cmath>
+
 class string
 {
 public:
@@ -335,8 +333,74 @@ public:
             number = -number;
         return number;
     }
-
+    void insert(char ch,int index)
+    {
+        if(this->copacity_ > this->length+1)
+        {
+            for(int i = this->length; i > index ; i--)
+            {
+                array[i] = array[i-1];
+            }
+            array[index] = ch;
+        }
+        else
+        {
+            char* tmp = new char[(length+1)*2];
+            for(int i = 0; i < index;i++)
+            {
+                tmp[i] = array[i];
+            }
+            tmp[index] = ch;
+            for(uint i = index+1; i <= this->length; i++)
+            {
+                tmp[i] = array[i-1];
+            }
+            delete [] array;
+            array = tmp;
+        }
+    }
+    char* find(const char* key)
+    {
+        uint L1 = strlen(key);
+        for(uint i = 0;i<= this->length-L1;i++)
+        {
+            if(compare(key,i,i+L1))
+            {
+                return array + i;
+            }
+        }
+        return nullptr;
+    }
+    void replace(const char* s1,const char* s2)
+    {
+        uint L1 = strlen(s1);
+        uint L2 = strlen(s2);
+        if(L1 == L2)
+        {
+            char* piece = this->find(s1);
+            while(piece != nullptr)
+            {
+                int i = piece - array;
+                for(uint j = 0 ;j < L1;j++)
+                {
+                    array[i+j] = s2[j];
+                }
+                piece = this->find(s1);
+            }
+        }
+    }
 private:
+    bool compare(const char* s1,int left,int right)
+    {
+        for(int i = 0;i < right-left;i++)
+        {
+            if(s1[i] != array[i+left])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     uint64_t strlen(const char* s)
     {
         uint64_t t = 0;
@@ -366,5 +430,10 @@ std::istream& operator>>(std::istream& in, string& s)
 
 int main()
 {
+    string s;
+    s = "1116663222111224563";
+    std::cout << s << std::endl;
+    s.replace("63","00");
+    std::cout << s << std::endl;
     return 0;
 }
