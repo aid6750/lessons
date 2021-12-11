@@ -425,9 +425,7 @@ void string::replace(const char* s1,const char* s2)
 
                 array[i+j] = array[i+j-1];
             }
-            piece = string(piece).find(s1);
-            std::cout << array << std::endl;
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            piece = string(piece).find(s1);;
         }
     }
 }
