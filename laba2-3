@@ -1,0 +1,70 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+void GenerateDataset(const char* filename, int num)
+{
+    srand(time(NULL));
+    std::ofstream fout(filename);
+    for(int i = 0;i<num;i++)
+    {
+        fout << 2*(500+rand()%4500) << "\n";
+    }
+}
+int sort(int* begin, int size, unsigned bit = pow(2,13),int n = 0)
+{
+    static int counter = 0;
+    if(n == 0)
+        counter = 0;
+
+    if (bit == 0)
+        return counter;
+
+    int last = 0;
+    for (int i = 0; i < size; i++)
+    {
+        counter ++;
+        if ((begin[i] & bit) == 0)
+        {
+            std::swap(begin[last++], begin[i]);
+        }
+    }
+    sort(begin,      last,      bit >> 1,10);
+    sort(begin+last, size-last, bit >> 1,10);
+}
+
+int SortDatabased(const char* oldfile, const char* newfile, int num)
+{
+    std::ifstream fin(oldfile);
+    int* array = new int[num];
+    for(int i = 0;i<num;i++)
+    {
+        fin >> array[i];
+    }
+    int n = sort(array,num);
+    fin.close();
+    std::ofstream fout(newfile);
+    for(int i = 0;i<num;i++)
+    {
+        fout << array[i] << "\n";
+    }
+    delete[] array;
+    return n;
+}
+
+int main()
+{
+    const char* file = "/home/konstantin/lessons/file";
+    const char* sortfile = "/home/konstantin/lessons/file.sort";
+    std::ofstream fout("/home/konstantin/Desktop/result");
+    fout << "num\t\t\tTэ\t\t\tT1\t\t\tT2\t\t\tTэ/T1\t\t\tTэ/T2\n";
+    for(int num = 8; num<=4096; num*=2)
+    {
+        GenerateDataset(file,num);
+        int n = SortDatabased(file,sortfile,num);
+        fout << num << "\t\t\t" << n << "\t\t\t";
+        fout << num*num << "\t\t\t" << num*log2(num) << "\t\t\t";
+        fout << double(n)/(num*num) << "\t\t\t";
+        fout << n/(num*log2(num)) << "\t\t\t\n";
+    }
+    return 0;
+}
